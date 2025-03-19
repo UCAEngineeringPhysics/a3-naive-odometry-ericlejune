@@ -5,7 +5,11 @@ Run this script with Micropython (on Pico).
 from diff_drive_controller import DiffDriveController
 from time import sleep
 from math import pi
+from machine import Pin 
+from time import sleep
 
+led = Pin("LED", Pin.OUT)
+led.on()
 
 # SETUP
 # Instantiate wheel
@@ -29,7 +33,7 @@ ref_vels = (
 vel_data = []
 
 # LOOP
-# sleep(1)  # get your robot ready!
+sleep(5)  # get your robot ready!
 targ_vel = ref_vels[0]
 bot.set_vel(*targ_vel)
 for i in range(400):  # 20Hz controller, 20 seconds
@@ -41,9 +45,14 @@ for i in range(400):  # 20Hz controller, 20 seconds
     sleep(0.05)
     # print(bot.lin_vel, bot.ang_vel)
     vel_data.append((bot.lin_vel, bot.ang_vel))
-
+sleep(1)
 bot.set_vel(0.0, 0.0)
 ### UNCOMMENT FOLLOWING 3 LINES WHEN SATISFIED WITH PID GAINS ###
-with open("vel_data.csv", "w") as file:
+with open("vel_data_no_load.csv", "w") as file:
     for i in range(len(vel_data)):
         file.write(f"{vel_data[i][0]},{vel_data[i][1]}\n")
+        
+
+sleep(1)
+led.off()
+
